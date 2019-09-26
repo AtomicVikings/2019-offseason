@@ -1,20 +1,16 @@
 package frc.robot;
 
+
 import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.wpilibj.Joystick;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
   
   private CANSparkMax leftFront, leftRear, rightFront, rightRear;
   private SpeedControllerGroup left, right;
@@ -26,10 +22,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     //Drive
-      leftFront     = new CANSparkMax(2);
-      leftRear      = new CANSparkMax(4);
-      rightFront    = new CANSparkMax(3);
-      rightRear     = new CANSparkMax(1);
+      leftFront     = new CANSparkMax(2, MotorType.kBrushless);
+      leftRear      = new CANSparkMax(4, MotorType.kBrushless);
+      rightFront    = new CANSparkMax(3, MotorType.kBrushless);
+      rightRear     = new CANSparkMax(1, MotorType.kBrushless);
       left          = new SpeedControllerGroup(leftFront, leftRear);
       right         = new SpeedControllerGroup(rightFront, rightRear);
       drive         = new DifferentialDrive(left, right);
