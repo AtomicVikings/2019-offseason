@@ -9,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Spark;
 
 public class Robot extends TimedRobot {
   
@@ -16,8 +18,9 @@ public class Robot extends TimedRobot {
   private SpeedControllerGroup left, right;
   private Joystick driver, mechanic;
   private DifferentialDrive drive;
-  private WPI_TalonSRX ballIntake, hatchMech;
-  
+  private WPI_TalonSRX ballIntake;
+  private DriverStation driverStation;
+  private Spark blinky;
 
   @Override
   public void robotInit() {
@@ -34,12 +37,13 @@ public class Robot extends TimedRobot {
 
     //Control
       ballIntake    = new WPI_TalonSRX(7);
-      hatchMech     = new WPI_TalonSRX(8);
 
     //Camera
     CameraServer.getInstance().startAutomaticCapture(0);
     CameraServer.getInstance().startAutomaticCapture(1);
-
+    
+    //LEDs
+    blinky          = new Spark(0);
   }
 
   @Override
@@ -66,20 +70,17 @@ public class Robot extends TimedRobot {
   }
 
   public void driveyThingy() {
+      //LED Colors
+      if (driverStation.getAlliance() == DriverStation.Alliance.Red) {
+        //set red
+      } else if (driverStation.getAlliance() == DriverStation.Alliance.Blue) {
+        //set blue
+      } else {
+        //set white
+      }
+  
     //Drive
-    boolean driveSwitch = false;
-    if (driver.getRawButton(5) == true) {
-      driveSwitch = true;
-    } else {
-      driveSwitch = false;
-    } 
-
-    
-    if (driveSwitch == true) {
-      drive.arcadeDrive(driver.getRawAxis(1) * -1 * .8, driver.getRawAxis(4) * -1);
-    } else {
-      drive.arcadeDrive(driver.getRawAxis(1) * .8, driver.getRawAxis(4) * -1);
-    }
+    drive.arcadeDrive(driver.getRawAxis(1) * -1, driver.getRawAxis(4));
       
     //Mecanics
       if (mechanic.getRawButton(1) == true) {
@@ -89,13 +90,6 @@ public class Robot extends TimedRobot {
       } else {
         ballIntake.set(0);
       }
-      
-      if (mechanic.getRawButton(5) == true) {
-        hatchMech.set(-1);
-      } else if (mechanic.getRawButton(6) == true) {
-        hatchMech.set(1);
-      } else {
-        hatchMech.set(0);
-      }
+
   }
 }
