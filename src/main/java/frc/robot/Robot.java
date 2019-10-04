@@ -40,19 +40,20 @@ public class Robot extends TimedRobot {
 
     //Camera
     CameraServer.getInstance().startAutomaticCapture(0);
-    CameraServer.getInstance().startAutomaticCapture(1);
     
     //LEDs
     blinky          = new Spark(0);
+    ledThingy();
   }
 
   @Override
   public void robotPeriodic() {
+    ledThingy();
   }
 
   @Override
   public void autonomousInit() {
-    
+    ledThingy();    
   }
 
   @Override
@@ -67,18 +68,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+    ledThingy();
   }
 
   public void driveyThingy() {
-      //LED Colors
-      if (driverStation.getAlliance() == DriverStation.Alliance.Red) {
-        //set red
-      } else if (driverStation.getAlliance() == DriverStation.Alliance.Blue) {
-        //set blue
-      } else {
-        //set white
-      }
-  
     //Drive
     drive.arcadeDrive(driver.getRawAxis(1) * -1, driver.getRawAxis(4));
       
@@ -92,4 +85,16 @@ public class Robot extends TimedRobot {
       }
 
   }
+  public void ledThingy() {
+    //LED Colors
+    if (driverStation.getAlliance() == DriverStation.Alliance.Red) {
+      blinky.set(.61);
+    } else if (driverStation.getAlliance() == DriverStation.Alliance.Blue) {
+      blinky.set(.87);
+    } else {
+      blinky.set(-.99);
+    }
+      
+  }
 }
+
